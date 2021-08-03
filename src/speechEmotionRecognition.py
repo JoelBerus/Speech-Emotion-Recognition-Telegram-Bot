@@ -70,7 +70,9 @@ if __name__ == '__main__':
         # print("filename:",filenames,",Predictions:",predictions)
         with open('SER_'+subdir+'.csv', 'w') as csvFile:
             writer = csv.writer(csvFile)
+            print(filenames)
             for i in range(len(filenames)):
+                print(i)
                 csvData = [filenames[i], 'person01',predictions[i][0],'person02',predictions[i][1]]
                 print("filename:",filenames[i],",Predicted Emotion := Person1:",predictions[i][0],",Person2:",predictions[i][1])
                 writer.writerow(csvData)
