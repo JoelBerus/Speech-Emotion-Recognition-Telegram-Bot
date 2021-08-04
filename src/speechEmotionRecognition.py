@@ -55,6 +55,7 @@ def predict(folder, classes, model):
 
 
 def init_model():
+    result = []  
     if __name__ == '__main__':
         INPUT_FOLDER_PATH = "input/"
         OUTPUT_FOLDER_PATH = "output/"
@@ -69,7 +70,6 @@ def init_model():
         for subdir in os.listdir(folder):
             predictions,filenames = predict(f'{folder}{"/"}{subdir}', classes, model)
             #print("filename:",filenames,",Predictions:",predictions)
-            result = []  
             with open('SER_'+subdir+'.csv', 'w') as csvFile:
                 writer = csv.writer(csvFile)
                 print('Hola que tal')
