@@ -7,6 +7,12 @@ from pydub import AudioSegment
 import shutil
 
 bot = telebot.TeleBot("1791987070:AAF6rlODgpy4u0AFrzPor40uBe0NESGq-e0")
+
+try:
+    LAST_UPDATE_ID = bot.getUpdates()[-1].update_id
+except IndexError:
+    LAST_UPDATE_ID = None
+
 r = sr.Recognizer();
 # File location 
 location_output = "./output"
@@ -47,7 +53,11 @@ try:
             os.remove(path_ogg)
             bot.send_message(message.chat.id, 'holas, porcesando tu adio')
             result = spr.init_model()
-            bot.send_message(message.chat.id, result[0])
+            is_empty = result.size == 0
+            if is_empty:
+              bot.send_message(message.chat.id, result[0])
+            else:
+              print("array vacio xd")
 
   @bot.message_handler(commands=["helps"])
   def enviar(message):
@@ -71,7 +81,7 @@ try:
   def echo_all(message):
     bot.reply_to(message, message.text)
 
-  bot.polling()
+  bot.infinity_polling()
 
 except telebot.apihelper.ApiException as e:
   if e.result.status_code == 403 or e.result.status_code == 400:
