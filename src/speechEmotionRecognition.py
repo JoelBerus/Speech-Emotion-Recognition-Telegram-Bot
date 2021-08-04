@@ -54,27 +54,35 @@ def predict(folder, classes, model):
     return solutions,filenames
 
 
-if __name__ == '__main__':
-    INPUT_FOLDER_PATH = "input/"
-    OUTPUT_FOLDER_PATH = "output/"
-    # bk.diarizeFromFolder(INPUT_FOLDER_PATH,OUTPUT_FOLDER_PATH)
-    for subdir in os.listdir(INPUT_FOLDER_PATH):
-        bk.diarizeFromFolder(f'{INPUT_FOLDER_PATH}{subdir}{"/"}',(f'{OUTPUT_FOLDER_PATH}{subdir}{"/"}'))
-        print("Diarized",subdir)
+def init_model():
+    if __name__ == '__main__':
+        INPUT_FOLDER_PATH = "input/"
+        OUTPUT_FOLDER_PATH = "output/"
+        # bk.diarizeFromFolder(INPUT_FOLDER_PATH,OUTPUT_FOLDER_PATH)
+        for subdir in os.listdir(INPUT_FOLDER_PATH):
+            bk.diarizeFromFolder(f'{INPUT_FOLDER_PATH}{subdir}{"/"}',(f'{OUTPUT_FOLDER_PATH}{subdir}{"/"}'))
+            print("Diarized",subdir)
 
 
 
-    folder = OUTPUT_FOLDER_PATH
-    for subdir in os.listdir(folder):
-        predictions,filenames = predict(f'{folder}{"/"}{subdir}', classes, model)
-        #print("filename:",filenames,",Predictions:",predictions)
-        with open('SER_'+subdir+'.csv', 'w') as csvFile:
-            writer = csv.writer(csvFile)
-            print('Hola que tal')
-            for i in range(len(filenames)):
-                #print(i)
-                csvData = [filenames[i], 'person01',predictions[i][0],'person02',predictions[i][1]]
-                print("filename:",filenames[i],",Predicted Emotion := Person1:",predictions[i][0],",Person2:",predictions[i][1])
-                writer.writerow(csvData)
-        csvFile.close()
-    os.remove("filterTemp.wav")
+        folder = OUTPUT_FOLDER_PATH
+        for subdir in os.listdir(folder):
+            predictions,filenames = predict(f'{folder}{"/"}{subdir}', classes, model)
+            #print("filename:",filenames,",Predictions:",predictions)
+            result = []  
+            with open('SER_'+subdir+'.csv', 'w') as csvFile:
+                writer = csv.writer(csvFile)
+                print('Hola que tal')
+                for i in range(len(filenames)):
+                    #print(i)
+                    result.append(predictions[i][0])
+                    result.append(predictions[i][1])
+                    csvData = [filenames[i], 'person01',predictions[i][0],'person02',predictions[i][1]]
+                    print("filename:",filenames[i],",Predicted Emotion := Person1:",predictions[i][0],",Person2:",predictions[i][1])
+                    writer.writerow(csvData)
+            csvFile.close()
+        os.remove("filterTemp.wav")
+    return result
+
+result = init_model()
+print(result)
