@@ -41,12 +41,13 @@ try:
 
       with file as source:
         audio = r.record(source)
-        
         #text = r.recognize_google(audio, lenguaje ='es-ES')
-        bot.send_message(message.chat.id, 'holas, porcesando tu adio')
         #eliminar el archivo el archivo ogg
         if os.path.exists(path_ogg):
             os.remove(path_ogg)
+            bot.send_message(message.chat.id, 'holas, porcesando tu adio')
+            result = spr.init_model()
+            bot.send_message(message.chat.id, result[0])
 
   @bot.message_handler(commands=["helps"])
   def enviar(message):
